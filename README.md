@@ -25,13 +25,13 @@ dotnet run
 http://localhost:5000
 ```
 
-## 🧪 Como Testar
+## Como Testar
 
 * Acesse a interface principal e utilize o formulário para criar novas tarefas.
 * Utilize o botão “Complete” para marcar uma tarefa como concluída (ou “Restore” para desfazer).
 * Os dados serão salvos e sincronizados em tempo real no Firestore.
 
-### 🔧 Tecnologias Utilizadas
+### Tecnologias Utilizadas
 
 * **Blazor Server** (.NET 8 ou superior)
 * **Google.Cloud.Firestore** (SDK oficial do Firebase para .NET)
