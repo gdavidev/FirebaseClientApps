@@ -1,0 +1,125 @@
+﻿@page "/"
+@using TodoApp.Infra.Entities
+@using TodoApp.Infra.Services
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+@inject TodoService TodoService
+
+<PageTitle>Home</PageTitle>
+
+<h1>ToDo's</h1>
+
+<EditForm Model="NewTodo" OnValidSubmit="HandleNewTodoSubmit" FormName="createTodoForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="row align-items-end">
+        <div class="col-10">
+            <div class="row">
+                <label class="p-0">Name:</label>
+                <InputText @bind-Value="NewTodo.Name" class="form-control" />
+            </div>
+            <div class="row">
+                <label class="p-0">Description:</label>
+                <InputText @bind-Value="NewTodo.Description" class="form-control" />
+            </div>
+        </div>
+        <div class="col d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </div>
+    
+    @if (!string.IsNullOrEmpty(Message))
+    {
+        <p>@Message</p>
+    }
+</EditForm>
+
+@if (Todos == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else if (Todos.Count == 0)
+{
+    <p>
+        <em>No Todo's found, create one!</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var todo in Todos)
+        {
+            var textClass = todo.Done ? "text-decoration-line-through text-muted" : "";
+            var btnClass = todo.Done ? "btn btn-secondary" : "btn btn-primary";
+            var btnLabel = todo.Done ? "Restore" : "Complete";
+            
+            <tr>
+                <td>
+                    <button class="@btnClass" @onclick="() => ToggleDoneAsync(todo)">
+                        @btnLabel
+                    </button>
+                </td>
+                <td class="@textClass">@todo.Id</td>
+                <td class="@textClass">@todo.Name</td>
+                <td class="@textClass">@todo.Description</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    [SupplyParameterFromForm]
+    private Todo NewTodo { get; set; } = new();
+    
+    private List<Todo>? Todos { get; set; }
+    private string Message { get; set; } = "";
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Todos = await TodoService.GetAllTodos();
+    }
+
+    private async Task ToggleDoneAsync(Todo todo)
+    {
+        todo.Done = !todo.Done;
+        Console.WriteLine(todo.Id);
+        await TodoService.SetDoneAsync(todo.Id, todo.Done);
+    }
+    
+    private async Task HandleNewTodoSubmit()
+    {
+        try
+        {
+            Message = "Sending...";
+
+            // Send Results and get the generated id
+            var newId = await TodoService.AddTodoAsync(NewTodo);
+            NewTodo.Id = newId;
+            Todos?.Add(NewTodo);
+
+            // Reset Form
+            NewTodo = new Todo();
+            Message = "Todo Created Successfully...";
+        }
+        catch (Exception e)
+        {
+            Message = "Creation of Todo Failed...";
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+}
