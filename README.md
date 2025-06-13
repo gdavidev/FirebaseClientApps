@@ -1,4 +1,4 @@
-# Projeto Blazor em c#.NET + VB.NET com Firebase, Mobile em ReactNative - Todos App
+# Projeto Blazor em C#.NET + VB.NET com Firebase, Mobile em ReactNative - Todos App
 
 Este projeto são duas aplicações de gerenciamento de tarefas (Todos) desenvolvida com **Blazor** e a outra com **ReactNative**, ambas conectadas ao mesmo **Firebase Firestore** para armazenamento de dados em nuvem.
 
@@ -74,4 +74,4 @@ npx expo start --clean
     * `Done` (bool): indica se a tarefa foi concluída
 
 ### Comunicação com o Firebase
-* A aplicação utiliza a SDK `Google.Cloud.Firestore` com o .NET e no React Native é utilizada a biblioteca mais recente disponivel no repositorio npm.
+* A aplicação utiliza a SDK `Google.Cloud.Firestore` com o .NET e no React Native utiliza a SDK `firebase`.
