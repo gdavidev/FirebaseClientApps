@@ -18,7 +18,7 @@ git clone https://github.com/seu-usuario/seu-repositorio.git
 cd seu-repositorio
 ```
 
-2.1. .NET
+2.1. **.NET**
 ```bash
 # Restaurar e compilar:
 dotnet restore
@@ -31,7 +31,7 @@ dotnet run
 http://localhost:5000
 ```
 
-2.2. ReactNative
+2.2. **ReactNative**
 ```bash
 # Baixar dependências
 npm install
